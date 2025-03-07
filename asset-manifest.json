@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/keywordad/static/css/main.f855e6bc.css",
+    "main.js": "/keywordad/static/js/main.d46f1338.js",
+    "index.html": "/keywordad/index.html",
+    "main.f855e6bc.css.map": "/keywordad/static/css/main.f855e6bc.css.map",
+    "main.d46f1338.js.map": "/keywordad/static/js/main.d46f1338.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f855e6bc.css",
+    "static/js/main.d46f1338.js"
+  ]
+}
