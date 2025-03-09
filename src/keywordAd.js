@@ -1,13 +1,15 @@
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
 
-//const axios = require('axios');
-//const CryptoJS = require('crypto-js');
+// const axios = require('axios');
+// const CryptoJS = require('crypto-js');
+
+const proxyURL = "https://cors-anywhere.herokuapp.com/";
 
 const NAVER_KEY = {
-    naverAdSecret: "AQAAAAAfhzXZ1uzz82QzobroC4XXtujgeFZilDH14z6X/MjlqA==",
-    naverAdAccess: "01000000001f8735d9d6ecf3f36433a1bae80b85d75e89a3a107f2b35d4b28f631583782ef",
-    naverAdId: "3412614"
+    naverAdSecret: 'AQAAAAAfhzXZ1uzz82QzobroC4XXtujgeFZilDH14z6X/MjlqA==',
+    naverAdAccess: '01000000001f8735d9d6ecf3f36433a1bae80b85d75e89a3a107f2b35d4b28f631583782ef',
+    naverAdId: '3412614'
 };
 
 const getNaverAdApiHeader = (path) => {  
@@ -40,16 +42,15 @@ const getNaverAdApiRequest = (url, method, headers, params) => {
     return request;
 };
 
-const params = {
-    hintKeywords: "키워드",
-    showDetail: 1
-}
+export async function requestKeywordAd(keyword) {
+    const params = {
+        hintKeywords: keyword,
+        showDetail: 1
+    }
 
-export async function requestKeywordAd() {
     const header = getNaverAdApiHeader('.GET./keywordstool');
-    const request = getNaverAdApiRequest(`https://api.naver.com/keywordstool`, 'get', header, params);
-    console.log(request);
+    const request = getNaverAdApiRequest(`${proxyURL}https://api.naver.com/keywordstool`, 'get', header, params);
     const res = await axios(request);
-    const data = res.data['data'];
+    const data = res.data['keywordList'];
     return data;
 };
