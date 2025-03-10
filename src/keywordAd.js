@@ -1,9 +1,6 @@
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
 
-// const axios = require('axios');
-// const CryptoJS = require('crypto-js');
-
 const proxyURL = "https://cors-anywhere.herokuapp.com/";
 
 const NAVER_KEY = {
@@ -38,7 +35,7 @@ const getNaverAdApiRequest = (url, method, headers, params) => {
     
     if(method==='get') request.params = params;
     if(method==='post') request.data = params;
-    
+     
     return request;
 };
 

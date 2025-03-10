@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { requestKeywordAd } from './keywordAd';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+
+const genAI = new GoogleGenerativeAI('AIzaSyBKW58fOycg7MJv8vqowK5BrVy0so2OqjQ');
+const model = genAI.getGenerativeModel({ model: "gemini=pro"} );
 
 function App() {
   const [keyword, setKeyword] = useState('');
   const [keywordAd, setKeywordAd] = useState(null);
+  const [search, setSearch] = useState('');
 
   const handleInputChange = (event) => {
     setKeyword(event.target.value);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearch(event.target.value);
   };
 
   const fetchKeywordAd = async () => {
@@ -25,7 +34,15 @@ function App() {
           type="text" 
           value={keyword} 
           onChange={handleInputChange}
-          placeholder='키워드를 입력하세요' 
+          placeholder='키워드를 입력하세요'
+          style={{ width: '300px', height: '20px' }}
+        />
+        <input
+          type="text"
+          value={search}
+          onChange={handleSearchChange}
+          placeholder='키워드 분류 타입을 입력하세요'
+          style={{ width: '300px', height: '20px' }}
         />
         <button onClick={fetchKeywordAd}>검색</button>
         <div style={{ margin: '20px 0'}} />
