@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { requestKeywordAd } from './keywordAd';
-import aiRun from './aiGenerative';
+import React, { useState } from "react";
+import { requestKeywordAd } from "./keywordAd";
+import aiRun from "./aiGenerative";
 
 function App() {
-  const [keyword, setKeyword] = useState('');
+  const [keyword, setKeyword] = useState("");
   const [keywordAd, setKeywordAd] = useState(null);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
   const handleInputChange = (event) => {
     setKeyword(event.target.value);
@@ -17,41 +17,56 @@ function App() {
 
   const fetchKeywordAd = async () => {
     setKeywordAd(null);
-    if (keyword.trim() != '') {
+
+    if (keyword.trim() != "") {
       const keywords = await requestKeywordAd(keyword);
       setKeywordAd(keywords);
-    }
 
-    if (keywordAd) {
-      keywordAd.map((keyword) => {
-        aiRun(keyword.relKeyword, search);
-      });
+      const keywordList = keywords.map((keyword) => keyword.relKeyword);
+      const typeList = new Array(keywords.length).fill(search);
+
+      const aiResults = await aiRun(keywordList, typeList);
+      console.log(aiResults);
     }
   };
-  
+
   return (
-    <div className="App" style={{ backgroundColor: 'black', color: 'white' }}>
-      <header className="App-header">
-        <input 
-          type="text" 
-          value={keyword} 
+    <div className='App' style={{ backgroundColor: "black", color: "white" }}>
+      <header className='App-header'>
+        <input
+          type='text'
+          value={keyword}
           onChange={handleInputChange}
           placeholder='키워드를 입력하세요'
-          style={{ marginTop: '30px', marginRight: '30px', width: '300px', height: '40px', backgroundColor: 'black', color: 'white' }}
+          style={{
+            marginTop: "30px",
+            marginRight: "30px",
+            width: "300px",
+            height: "40px",
+            backgroundColor: "black",
+            color: "white",
+          }}
         />
         <input
-          type="text"
+          type='text'
           value={search}
           onChange={handleSearchChange}
           placeholder='키워드 분류 타입을 입력하세요'
-          style={{ marginRight: '30px', width: '300px', height: '40px', backgroundColor: 'black', color: 'white' }}
+          style={{
+            marginRight: "30px",
+            width: "300px",
+            height: "40px",
+            backgroundColor: "black",
+            color: "white",
+          }}
         />
         <button
-          style={{ width: '100px', height: '45px' }} 
+          style={{ width: "100px", height: "45px" }}
           onClick={fetchKeywordAd}
-
-        >검   색</button>
-        <div style={{ margin: '20px' }} />
+        >
+          검 색
+        </button>
+        <div style={{ margin: "20px" }} />
         {keywordAd ? (
           <table>
             <thead>
@@ -82,7 +97,7 @@ function App() {
             </tbody>
           </table>
         ) : (
-          <p style={{ fontWeight: 'bold', fontSize: '20px'}}>로딩 중...</p>
+          <p style={{ fontWeight: "bold", fontSize: "20px" }}>로딩 중...</p>
         )}
       </header>
     </div>
