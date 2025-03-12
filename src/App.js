@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { requestKeywordAd } from './keywordAd';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-
-const genAI = new GoogleGenerativeAI('AIzaSyBKW58fOycg7MJv8vqowK5BrVy0so2OqjQ');
-const model = genAI.getGenerativeModel({ model: "gemini=pro"} );
+import aiRun from './aiGenerative';
 
 function App() {
   const [keyword, setKeyword] = useState('');
@@ -21,31 +18,40 @@ function App() {
   const fetchKeywordAd = async () => {
     setKeywordAd(null);
     if (keyword.trim() != '') {
-      const keywordAd = await requestKeywordAd(keyword);
-      setKeywordAd(keywordAd);
+      const keywords = await requestKeywordAd(keyword);
+      setKeywordAd(keywords);
+    }
+
+    if (keywordAd) {
+      keywordAd.map((keyword) => {
+        aiRun(keyword.relKeyword, search);
+      });
     }
   };
-
-
+  
   return (
-    <div className="App">
+    <div className="App" style={{ backgroundColor: 'black', color: 'white' }}>
       <header className="App-header">
         <input 
           type="text" 
           value={keyword} 
           onChange={handleInputChange}
           placeholder='키워드를 입력하세요'
-          style={{ width: '300px', height: '20px' }}
+          style={{ marginTop: '30px', marginRight: '30px', width: '300px', height: '40px', backgroundColor: 'black', color: 'white' }}
         />
         <input
           type="text"
           value={search}
           onChange={handleSearchChange}
           placeholder='키워드 분류 타입을 입력하세요'
-          style={{ width: '300px', height: '20px' }}
+          style={{ marginRight: '30px', width: '300px', height: '40px', backgroundColor: 'black', color: 'white' }}
         />
-        <button onClick={fetchKeywordAd}>검색</button>
-        <div style={{ margin: '20px 0'}} />
+        <button
+          style={{ width: '100px', height: '45px' }} 
+          onClick={fetchKeywordAd}
+
+        >검   색</button>
+        <div style={{ margin: '20px' }} />
         {keywordAd ? (
           <table>
             <thead>
