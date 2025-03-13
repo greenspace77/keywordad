@@ -1,7 +1,7 @@
 import axios from "axios";
 import CryptoJS from "crypto-js";
 
-const proxyURL = "https://cors-anywhere.herokuapp.com/";
+//const proxyURL = "https://cors-anywhere.herokuapp.com/";
 
 const NAVER_KEY = {
   naverAdSecret: "AQAAAAAfhzXZ1uzz82QzobroC4XXtujgeFZilDH14z6X/MjlqA==",
@@ -51,7 +51,8 @@ export async function requestKeywordAd(keyword) {
 
   const header = getNaverAdApiHeader(".GET./keywordstool");
   const request = getNaverAdApiRequest(
-    `${proxyURL}https://api.naver.com/keywordstool`,
+    //`${proxyURL}https://api.naver.com/keywordstool`,
+    `/keywordstool`,
     "get",
     header,
     params
