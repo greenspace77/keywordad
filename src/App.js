@@ -6,6 +6,7 @@ function App() {
   const [keyword, setKeyword] = useState("");
   const [keywordAd, setKeywordAd] = useState(null);
   const [search, setSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (event) => {
     setKeyword(event.target.value);
@@ -17,6 +18,7 @@ function App() {
 
   const fetchKeywordAd = async () => {
     setKeywordAd(null);
+    setIsLoading(true);
 
     if (keyword.trim() != "") {
       const keywords = await requestKeywordAd(keyword);
@@ -28,6 +30,8 @@ function App() {
       const aiResults = await aiRun(keywordList, typeList);
       console.log(aiResults);
     }
+
+    setIsLoading(false);
   };
 
   return (
@@ -37,7 +41,7 @@ function App() {
           type='text'
           value={keyword}
           onChange={handleInputChange}
-          placeholder='키워드를 입력하세요'
+          placeholder='코어 키워드를 입력하세요'
           style={{
             marginTop: "30px",
             marginRight: "30px",
@@ -64,38 +68,40 @@ function App() {
           style={{ width: "100px", height: "45px" }}
           onClick={fetchKeywordAd}
         >
-          검 색
+          적 용
         </button>
         <div style={{ margin: "20px" }} />
-        {keywordAd ? (
-          <table>
-            <thead>
-              <tr>
-                <th>키워드</th>
-                <th>PC 월간 검색수</th>
-                <th>모바일 월간 검색수</th>
-                <th>PC 월평균 클릭수</th>
-                <th>모바일 월평균 클릭수</th>
-                <th>PC 월평균 노출 광고수</th>
-                <th>경쟁 정도</th>
-              </tr>
-            </thead>
-            <tbody>
-              {keywordAd.map((keyword, index) => {
-                return (
-                  <tr key={index}>
-                    <td>{keyword.relKeyword}</td>
-                    <td>{keyword.monthlyPcQcCnt}</td>
-                    <td>{keyword.monthlyMobileQcCnt}</td>
-                    <td>{keyword.monthlyAvePcClkCnt}</td>
-                    <td>{keyword.monthlyAveMobileClkCnt}</td>
-                    <td>{keyword.plAvgDepth}</td>
-                    <td>{keyword.compIdx}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+        {!isLoading ? (
+          keywordAd && (
+            <table>
+              <thead>
+                <tr>
+                  <th>키워드</th>
+                  <th>PC 월간 검색수</th>
+                  <th>모바일 월간 검색수</th>
+                  <th>PC 월평균 클릭수</th>
+                  <th>모바일 월평균 클릭수</th>
+                  <th>PC 월평균 노출 광고수</th>
+                  <th>경쟁 정도</th>
+                </tr>
+              </thead>
+              <tbody>
+                {keywordAd.map((keyword, index) => {
+                  return (
+                    <tr key={index}>
+                      <td>{keyword.relKeyword}</td>
+                      <td>{keyword.monthlyPcQcCnt}</td>
+                      <td>{keyword.monthlyMobileQcCnt}</td>
+                      <td>{keyword.monthlyAvePcClkCnt}</td>
+                      <td>{keyword.monthlyAveMobileClkCnt}</td>
+                      <td>{keyword.plAvgDepth}</td>
+                      <td>{keyword.compIdx}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          )
         ) : (
           <p style={{ fontWeight: "bold", fontSize: "20px" }}>로딩 중...</p>
         )}

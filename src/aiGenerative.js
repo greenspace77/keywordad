@@ -15,12 +15,12 @@ async function aiRun(keywords, types) {
     })
     .join("\n");
 
-  console.log(prompt);
+  //console.log(prompt);
 
   const result = await model.generateContent(prompt);
   const response = await result.response;
   const text = response.text();
-  console.log(text);
+  //console.log(text);
 
   const responses = text.split("\n").map((line, index) => ({
     keyword: keywords[index],
